@@ -109,18 +109,12 @@ class MasterViewController: UIViewController {
     }
 
     private func configureErrorHandling() {
-        viewModel.onFailure.subscribe { [weak self] in
-            switch $0 {
-            case .next(let error):
-                self?.present(error: error)
-            default:
-                break
-            }
-        }.disposed(by: disposeBag)
+        viewModel.onFailure.bind(onNext: { [weak self] in self?.present(error: $0) }).disposed(by: disposeBag)
     }
 
     private func configureSearch() {
         searchController.searchBar.rx.text.orEmpty.asObservable().bind(onNext: { [viewModel] in viewModel.repositoryFilterOptions.value.filterText = $0 }).disposed(by: disposeBag)
+
         searchController.searchBar.rx.cancelButtonClicked.bind(onNext: { [viewModel] in viewModel.repositoryFilterOptions.value.filterText = "" }).disposed(by: disposeBag)
     }
 }

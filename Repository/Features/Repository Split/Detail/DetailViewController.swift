@@ -51,7 +51,7 @@ class DetailViewController: UIViewController {
     }
 
     private func clear() {
-        title = ""
+        title = nil
         repositoryNameLabel.text = ""
         ownerNameLabel.text = ""
         descriptionTextView.text = ""

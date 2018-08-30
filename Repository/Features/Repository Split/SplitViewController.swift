@@ -12,8 +12,6 @@ import RxSwift
 // MARK: -
 class SplitViewController: UISplitViewController {
 
-    private let disposeBag = DisposeBag()
-
     // MARK: View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()

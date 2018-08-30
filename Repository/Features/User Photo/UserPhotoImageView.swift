@@ -22,6 +22,7 @@ class UserPhotoImageView: UIImageView {
     // MARK: Initializations
     init() {
         super.init(frame: .zero)
+        contentMode = .scaleAspectFill
     }
 
     override init(frame: CGRect) {
