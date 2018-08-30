@@ -33,12 +33,8 @@ class MasterTableViewCell: UITableViewCell {
         userNameLabel.text = repository.ownerName
         userPhotoVC.stringURL = repository.ownerAvatarURL
 
-        switch repository.serviceSource {
-        case .bitbucket:
-            repositoryNameLabel.font = .systemFont(ofSize: 17, weight: .bold)
-        case .gitHub:
-            repositoryNameLabel.font = .systemFont(ofSize: 17, weight: .regular)
-        }
+        let fontWeight: UIFont.Weight = repository.serviceSource == .bitbucket ? .bold : .regular
+        repositoryNameLabel.font = .systemFont(ofSize: 17, weight: fontWeight)
     }
 
     // MARK: Configuration

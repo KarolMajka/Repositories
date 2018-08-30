@@ -62,6 +62,11 @@ class UserPhotoViewController: UIViewController {
         updateImage(url: url)
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        imageView.updateBounds()
+    }
+
     // MARK: Methods
     func redownloadImage() {
         updateImage(url: url)
@@ -69,6 +74,6 @@ class UserPhotoViewController: UIViewController {
 
     // MARK: Private Methods
     private func updateImage(url: URL?) {
-        imageView.kf.setImage(with: url, placeholder: placeholderImage)
+        imageView?.kf.setImage(with: url, placeholder: placeholderImage)
     }
 }

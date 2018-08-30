@@ -27,6 +27,11 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        updateRepository()
+    }
+
+    // MARK: Private Methods
+    private func updateRepository() {
         if let repository = repository {
             update(repository: repository)
         } else {
@@ -35,13 +40,18 @@ class DetailViewController: UIViewController {
     }
 
     private func update(repository: RepositoryModel) {
+        title = repository.name
         repositoryNameLabel.text = repository.name
         ownerNameLabel.text = repository.ownerName
         descriptionTextView.text = repository.description
         userPhotoVC.stringURL = repository.ownerAvatarURL
+
+        let fontWeight: UIFont.Weight = repository.serviceSource == .bitbucket ? .bold : .regular
+        repositoryNameLabel.font = .systemFont(ofSize: 17, weight: fontWeight)
     }
 
     private func clear() {
+        title = ""
         repositoryNameLabel.text = ""
         ownerNameLabel.text = ""
         descriptionTextView.text = ""

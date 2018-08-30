@@ -15,8 +15,8 @@ class MasterViewModel {
 
     // MARK: Properties
     lazy var dataSource: Driver<[RepositoryModel]> = {
-        return Observable.combineLatest(zipDataSource, repositoryFilterOptions.asObservable()) {
-            return $0.filter(options: $1)
+        return Observable.combineLatest(bitbucketDataSource, gitHubDataSource, repositoryFilterOptions.asObservable()) {
+            return ($0 + $1).filter(options: $2)
         }.asDriver(onErrorJustReturn: [])
     }()
 
@@ -25,7 +25,7 @@ class MasterViewModel {
     private let realmManager: RealmManager
 
     lazy private var zipDataSource: Observable<[RepositoryModel]> = {
-        return Observable.combineLatest(bitbucketDataSource, gitHubDataSource) {
+        return Observable.zip(bitbucketDataSource, gitHubDataSource) {
             return $0 + $1
         }
     }()
@@ -44,10 +44,10 @@ class MasterViewModel {
     // MARK: Methods
     func loadCachedData() {
         getFromRealm()
+        subscribeForRealm()
     }
 
     func loadData() {
-        subscribeForRealm()
         loadGitHubData()
         loadBitbucketData()
     }
