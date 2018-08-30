@@ -48,10 +48,10 @@ struct RepositoryFilterOptions {
 
     // MARK: Methods
     func filter(repositoryArray: [RepositoryModel]) -> [RepositoryModel] {
-        guard filterText != "" else { return repositoryArray }
-
+        guard self.filterText != "" else { return repositoryArray }
+        let filterText = self.filterText.lowercased()
         return repositoryArray.filter {
-            guard $0.name.contains(self.filterText) || $0.description.contains(self.filterText) || $0.ownerName.contains(self.filterText) else { return false }
+            guard $0.name.contains(filterText) || $0.description.contains(filterText) || $0.ownerName.contains(filterText) else { return false }
             return true
         }
     }

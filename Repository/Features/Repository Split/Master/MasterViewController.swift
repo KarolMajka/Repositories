@@ -22,6 +22,7 @@ class MasterViewController: UIViewController {
     @IBOutlet var tableView: UITableView!
     @IBOutlet var sortBarButtonItem: UIBarButtonItem!
     let refreshControl = UIRefreshControl()
+    let searchController = UISearchController(searchResultsController: nil)
 
     // MARK: View Life Cycle
     override func viewDidLoad() {
@@ -29,6 +30,10 @@ class MasterViewController: UIViewController {
 
         tableView.registerClass(MasterTableViewCell.self)
         tableView.refreshControl = refreshControl
+
+        searchController.hidesNavigationBarDuringPresentation = false
+        searchController.dimsBackgroundDuringPresentation = false
+        navigationItem.searchController = searchController
 
         configureRx()
 
@@ -69,6 +74,7 @@ class MasterViewController: UIViewController {
         configureSortTap()
         configureTableViewRefresh()
         configureErrorHandling()
+        configureSearch()
     }
 
     private func configureTableDataSource() {
@@ -111,5 +117,10 @@ class MasterViewController: UIViewController {
                 break
             }
         }.disposed(by: disposeBag)
+    }
+
+    private func configureSearch() {
+        searchController.searchBar.rx.text.orEmpty.asObservable().bind(onNext: { [viewModel] in viewModel.repositoryFilterOptions.value.filterText = $0 }).disposed(by: disposeBag)
+        searchController.searchBar.rx.cancelButtonClicked.bind(onNext: { [viewModel] in viewModel.repositoryFilterOptions.value.filterText = "" }).disposed(by: disposeBag)
     }
 }
