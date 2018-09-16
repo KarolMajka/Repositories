@@ -113,8 +113,10 @@ class MasterViewController: UIViewController {
     }
 
     private func configureSearch() {
-        searchController.searchBar.rx.text.orEmpty.asObservable().bind(onNext: { [viewModel] in viewModel.repositoryFilterOptions.value.filterText = $0 }).disposed(by: disposeBag)
-
-        searchController.searchBar.rx.cancelButtonClicked.bind(onNext: { [viewModel] in viewModel.repositoryFilterOptions.value.filterText = "" }).disposed(by: disposeBag)
+        Observable
+            .of(searchController.searchBar.rx.text.orEmpty.asObservable(), searchController.searchBar.rx.cancelButtonClicked.map { "" }.asObservable())
+            .merge()
+            .bind(onNext: { [viewModel] in viewModel.repositoryFilterOptions.value.filterText = $0 })
+            .disposed(by: disposeBag)
     }
 }
